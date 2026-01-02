@@ -1,4 +1,28 @@
-export const SPRITE_COUNT = 1_000_000;
+const DEFAULT_COUNT = 100_000;
+
+const getCountFromURL = (): number => {
+  const params = new URLSearchParams(window.location.search);
+  const count = params.get("bunny-count");
+  if (!count) return DEFAULT_COUNT;
+  const parsed = parseInt(count, 10);
+  return isNaN(parsed)
+    ? DEFAULT_COUNT
+    : Math.max(1000, Math.min(parsed, 2_000_000));
+};
+
+export const SPRITE_COUNT = getCountFromURL();
+
+export const COUNT_PRESETS = [
+  { label: "1K", value: 1_000 },
+  { label: "50K", value: 50_000 },
+  { label: "100K", value: 100_000 },
+  { label: "200K", value: 200_000 },
+  { label: "500K", value: 500_000 },
+  { label: "1M", value: 1_000_000 },
+  { label: "1.5M", value: 1_500_000 },
+  { label: "2M", value: 2_000_000 },
+] as const;
+
 export const SPRITE_COLUMNS = 4;
 export const SPRITE_ROWS = 3;
 export const SPRITE_TYPES = 12;

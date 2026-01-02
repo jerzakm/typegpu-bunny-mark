@@ -1,7 +1,61 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 canvas {
   width: 100vw;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
+}
+
+#bunny-nav {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 14px;
+  color: #fff;
+}
+
+#bunny-nav span {
+  font-weight: 600;
+  color: #ffd54f;
+}
+
+.preset-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.preset-buttons a {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #ccc;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.preset-buttons a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.preset-buttons a.active {
+  background: #ffd54f;
+  color: #000;
+  font-weight: 600;
 }

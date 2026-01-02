@@ -3,8 +3,11 @@ import { SPRITE_COUNT } from "./constants";
 import { createPhysicsState, createStaticData, updatePhysics } from "./physics";
 import { createRenderer } from "./renderer";
 import { generateSpritesheet } from "./spritesheet";
+import { createUI } from "./ui";
 
 const init = async () => {
+  createUI();
+
   const canvas = document.querySelector("canvas") as HTMLCanvasElement;
   const spritesheet = await generateSpritesheet();
   const physicsState = createPhysicsState();
