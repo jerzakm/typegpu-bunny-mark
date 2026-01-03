@@ -28,18 +28,21 @@ const rand = (min = 0, max = 1) => min + Math.random() * (max - min);
 
 export const createPhysicsState = (): PhysicsState => {
   const physics = new Float32Array(SPRITE_COUNT * 4);
-  const positions = new Float32Array(SPRITE_COUNT * 2);
+  const positions = new Float16Array(SPRITE_COUNT * 2);
 
   for (let i = 0; i < SPRITE_COUNT; i++) {
     const physOffset = i * 4;
-    physics[physOffset] = rand(-0.95, 0.95);
-    physics[physOffset + 1] = rand(-0.95, 0.95);
+    const posX = rand(-0.95, 0.95);
+    const posY = rand(-0.95, 0.95);
+
+    physics[physOffset] = posX;
+    physics[physOffset + 1] = posY;
     physics[physOffset + 2] = rand(-0.015, 0.015);
     physics[physOffset + 3] = rand(-0.01, 0.01);
 
     const posOffset = i * 2;
-    positions[posOffset] = physics[physOffset];
-    positions[posOffset + 1] = physics[physOffset + 1];
+    positions[posOffset] = posX;
+    positions[posOffset + 1] = posY;
   }
 
   return { physics, positions };

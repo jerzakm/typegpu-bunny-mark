@@ -1,9 +1,26 @@
 import "./style.css";
 import { SPRITE_COUNT } from "./constants";
 import { createPhysicsState, createStaticData, updatePhysics } from "./physics";
-import { createRenderer } from "./renderer";
+import { createRenderer, type Renderer } from "./renderer";
 import { generateSpritesheet } from "./spritesheet";
 import { createUI } from "./ui";
+
+let renderer: Renderer | null = null;
+let animationId: number | null = null;
+
+const cleanup = () => {
+  if (animationId !== null) {
+    cancelAnimationFrame(animationId);
+    animationId = null;
+  }
+  if (renderer) {
+    renderer.destroy();
+    renderer = null;
+  }
+};
+
+window.addEventListener("beforeunload", cleanup);
+window.addEventListener("pagehide", cleanup);
 
 const init = async () => {
   createUI();
@@ -13,12 +30,18 @@ const init = async () => {
   const physicsState = createPhysicsState();
   const staticData = createStaticData();
 
-  const renderer = await createRenderer(
+  renderer = await createRenderer(
     canvas,
     spritesheet,
     staticData,
     physicsState.positions
   );
+
+  renderer.onDeviceLost(async () => {
+    console.log("Attempting to recover from device loss...");
+    cleanup();
+    setTimeout(() => init(), 1000);
+  });
 
   renderer.resize();
   window.addEventListener("resize", renderer.resize);
@@ -31,10 +54,10 @@ const init = async () => {
     lastTime = currentTime;
 
     updatePhysics(physicsState, deltaTime);
-    renderer.uploadPositions(physicsState.positions);
-    renderer.render();
+    renderer?.uploadPositions(physicsState.positions);
+    renderer?.render();
 
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
   };
 
   animate();

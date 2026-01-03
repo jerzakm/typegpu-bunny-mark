@@ -16,5 +16,5 @@ export interface SpritesheetData {
 
 export interface PhysicsState {
   physics: Float32Array;
-  positions: Float32Array;
+  positions: Float16Array;
 }
